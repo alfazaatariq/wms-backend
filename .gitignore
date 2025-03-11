@@ -24,3 +24,5 @@ Thumbs.db
 # Dependency lock files (optional, if using only one package manager)  
 package-lock.json  
 yarn.lock  
+
+tests
