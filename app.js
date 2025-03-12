@@ -1,5 +1,6 @@
 const express = require("express");
 const authRouter = require("./route/auth_route");
+const userRouter = require("./route/user_route");
 const catchAsync = require("./utils/catchAsync");
 const AppError = require("./utils/appError");
 const globalErrorHandler = require("./controller/error_controller");
@@ -10,6 +11,7 @@ const app = express();
 
 app.use(express.json());
 app.use("/api/v1/auth", authRouter);
+app.use("/api/v1/user", userRouter);
 
 app.use(
   "*",
