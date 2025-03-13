@@ -1,14 +1,22 @@
 const catchAsync = require("../utils/catchAsync");
 const product = require("../db/models/product");
+const { Op } = require("sequelize");
 
 const getAllProduct = catchAsync(async (req, res, next) => {
-  const products = await product.findAll();
+  const { search } = req.query;
+
+  const whereClause = search
+    ? { name: { [Op.iLike]: `%${search}%` } } // Case-insensitive search for PostgreSQL (Sequelize)
+    : {};
+
+  const products = await product.findAll({ where: whereClause });
 
   return res.status(200).json({
     status: "success",
     data: products,
   });
 });
+
 const createProduct = catchAsync(async (req, res, next) => {
   const body = req.body;
 
@@ -31,6 +39,7 @@ const createProduct = catchAsync(async (req, res, next) => {
     data: result,
   });
 });
+
 const updateProductById = catchAsync(async (req, res, next) => {
   const { id } = req.params;
   const updatedData = req.body;
@@ -47,6 +56,7 @@ const updateProductById = catchAsync(async (req, res, next) => {
     data: existingProduct,
   });
 });
+
 const deleteProductById = catchAsync(async (req, res, next) => {
   const { id } = req.params;
 
